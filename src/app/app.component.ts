@@ -21,7 +21,13 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 export class AppComponent {
   title = "Formly Practice"
   form = new FormGroup({});
-  model = { email: 'email@gmail.com' };
+  model = {
+    email: 'email@gmail.com',
+    date_of_birth: new Date(),
+    amount: 500,
+    name: "Kent C. Strait",
+
+ };
   fields: FormlyFieldConfig[] = [
     {
       key: 'name',
@@ -29,6 +35,7 @@ export class AppComponent {
       templateOptions: {
         label: 'Name',
         placeholder: 'Enter name',
+        required: true,
       }
     },
     {
@@ -38,6 +45,8 @@ export class AppComponent {
         type: 'email',
         label: 'Email',
         placeholder: 'Enter email',
+        minLength: 3,
+        maxLength: 25,
       }
     },
     {
@@ -46,7 +55,9 @@ export class AppComponent {
       templateOptions: {
         type: 'number',
         label: 'Amount',
-        placeholder: 'Enter Amount'
+        placeholder: 'Enter Amount $0.00',
+        min: 1,
+        max: 500,
       }
     },
     {
