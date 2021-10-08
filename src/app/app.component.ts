@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { FormlyFieldConfig } from '@ngx-formly/core';
-// import { appendFile } from 'fs';
+import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +10,8 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
     <h1>{{title}}</h1>
     <p>This app is to help learn forms with formly</p>
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
-      <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
+      <formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>
+      <button type="button" mat-raised-button color="warn" (click)="options.resetModel()">Reset</button>
       <button type="submit" mat-raised-button color="primary">Submit</button>
     </form>
     <pre>{{model | json}}</pre>
@@ -22,16 +23,20 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 export class AppComponent {
   title = "Formly Practice"
   form = new FormGroup({});
+  options: FormlyFormOptions = {};
+
+ constructor(private http: HttpClient) { }
+
   model = {
-    email: 'email@gmail.com',
-    terms_1: false,
-    terms: true,
-    date_of_birth: new Date(),
-    amount: 500,
-    name: "Kent C. Strait",
-    description: "Put Your Description Here",
+    email: "",
+    terms2: false,
+    terms: false,
+    date_of_birth: '',
+    amount: 0,
+    name: "",
+    description: "",
     era: 1,
-    ip: "2.148.3.2",
+    ip: "",
  }
 
   fields: FormlyFieldConfig[] = [
@@ -47,6 +52,7 @@ export class AppComponent {
     {
       key: 'email',
       type: 'input',
+      hideExpression: '!model.name',
       templateOptions: {
         type: 'email',
         label: 'Email',
@@ -171,5 +177,13 @@ export class AppComponent {
 
   onSubmit() {
     console.log(this.model);
+    if (this.form.valid) {
+      console.log(JSON.stringify(this.model))
+      this.http.post('url', this.model, null).subscribe((response) =>{
+        console.log('response:', response)
+      }, (error) =>{
+        console.log('error:', error)
+      })
+    }
   }
 }
