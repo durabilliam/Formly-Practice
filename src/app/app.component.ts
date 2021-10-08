@@ -32,6 +32,7 @@ export class AppComponent {
     name: "Kent C. Strait",
     description: "Put Your Description Here",
     era: 1,
+    ip: "2.148.3.2",
  }
 
   fields: FormlyFieldConfig[] = [
@@ -75,6 +76,17 @@ export class AppComponent {
         description: 'Description',
         required: true,
       }
+    },
+    {
+      key: 'ip',
+      type: 'input',
+      templateOptions: {
+        label: 'Enter Ip Address',
+        required: true,
+      },
+      validators: {
+        validation: ['ip']
+      },
     },
     {
       key: 'terms',

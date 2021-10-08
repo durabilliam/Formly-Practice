@@ -4,7 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormControl, ValidationErrors, Validators } from '@angular/forms';
 import { FormlyModule, FormlyFieldConfig } from '@ngx-formly/core';
 import { FormlyMaterialModule } from '@ngx-formly/material';
 import { FormlyMatDatepickerModule } from '@ngx-formly/material/datepicker';
@@ -35,6 +35,13 @@ export function validateMin(err, field:FormlyFieldConfig) {
 }
 export function validateMax(err, field:FormlyFieldConfig) {
   return `This value should be less than ` + field.templateOptions.max
+}
+//Custom Validations
+export function IpValidator(control: FormControl): ValidationErrors {
+  return !control.value || /(\d{1,3}\.){3}\d{1,3}/.test(control.value) ? null : { 'ip': true };
+}
+export function IpValidatorMessage(err, field: FormlyFieldConfig){
+  return `"${field.formControl.value}" is not a valid Ip Address`;
 }
 
 
@@ -67,6 +74,11 @@ export function validateMax(err, field:FormlyFieldConfig) {
 				{ name: 'maxlength', message: validateMaxLength },
 				{ name: 'min', message: validateMin },
 				{ name: 'max', message: validateMax },
+        //Custom Validation
+        { name: 'ip', message: IpValidatorMessage },
+      ],
+      validators: [
+        {name: 'ip', validation: IpValidator}
       ]
     }),
     FormlyMaterialModule,
