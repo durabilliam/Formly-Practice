@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 // import { appendFile } from 'fs';
@@ -10,9 +10,8 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
     <h1>{{title}}</h1>
     <p>This app is to help learn forms with formly</p>
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
-      <formly-form [form]="form" [fields]="fields" [model]="model">
-      </formly-form>
-      <button type="submit" class="btn btn-default">Submit</button>
+      <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
+      <button type="submit" mat-raised-button color="primary">Submit</button>
     </form>
     <pre>{{model | json}}</pre>
   </div>
@@ -130,6 +129,44 @@ export class AppComponent {
         ]
       }
     },
+    // Repeatable Sections
+    {
+      key: 'comics',
+      type: 'repeat',
+      templateOptions: {
+        addText: 'Add Comics',
+      },
+      fieldArray: {
+        fieldGroup: [
+          {
+            type: 'input',
+            key: 'comicName',
+            templateOptions: {
+              label: 'Name and Issue Number',
+              required: true,
+            },
+          },
+          {
+            type: 'datepicker',
+            key: 'comicDate',
+            templateOptions: {
+              label: 'Cover Date',
+            },
+          },
+          {
+            type: 'input',
+            key: 'amount',
+            templateOptions: {
+              type: 'number',
+              label: 'Amount',
+              placeholder: 'Enter Value',
+              min: 1,
+              max: 30000,
+            },
+          },
+        ]
+      }
+    }
   ];
 
   onSubmit() {
