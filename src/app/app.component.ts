@@ -1,7 +1,7 @@
-import { Placeholder } from '@angular/compiler/src/i18n/i18n_ast';
 import { Component } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
+// import { appendFile } from 'fs';
 
 @Component({
   selector: 'app-root',
@@ -17,17 +17,23 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
     <pre>{{model | json}}</pre>
   </div>
   `,
+  styleUrls: ['./app.component.scss'],
 })
+
 export class AppComponent {
   title = "Formly Practice"
   form = new FormGroup({});
   model = {
     email: 'email@gmail.com',
+    terms_1: false,
+    terms: true,
     date_of_birth: new Date(),
     amount: 500,
     name: "Kent C. Strait",
+    description: "Put Your Description Here",
+    era: 1,
+ }
 
- };
   fields: FormlyFieldConfig[] = [
     {
       key: 'name',
@@ -46,7 +52,7 @@ export class AppComponent {
         label: 'Email',
         placeholder: 'Enter email',
         minLength: 3,
-        maxLength: 25,
+        maxLength: 50,
       }
     },
     {
